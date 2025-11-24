@@ -96,6 +96,7 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 | **Frontend** | HTML5, CSS3, JavaScript | Interfaz de usuario interactiva y asíncrona. |
 ```
 
+---
 # 6. Estructura de Archivos
 
 ```text
