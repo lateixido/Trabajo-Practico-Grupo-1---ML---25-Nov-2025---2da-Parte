@@ -1,4 +1,4 @@
-﻿# Trabajo Práctico Machine Learning - Modelo de Negocio
+﻿# Trabajo Práctico Machine Learning - Recomendador Musical - Modelo de Negocio
 # Grupo 1 - 25/11/2025
 
 ## Integrantes
