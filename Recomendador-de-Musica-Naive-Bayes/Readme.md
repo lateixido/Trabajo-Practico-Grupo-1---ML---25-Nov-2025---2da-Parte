@@ -109,9 +109,9 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 │    ├─ model_api.py   # Servidor API (FastAPI)
 │    ├─ music_recommender_with_clusters.joblib # Artefacto generado (Modelo serializado)
 │    │  (aquí se guardarán los artefactos del modelo entrenado)
-│    ├─ colab/
-│    	├─ train_model.ipynb
-│    	├─ model_api.ipynb
+│    ├─📁 colab/
+│    	  ├─ train_model.ipynb
+│    	  ├─ model_api.ipynb
 │    
 ├─📁 documentacion/
 │    📁├─ media/

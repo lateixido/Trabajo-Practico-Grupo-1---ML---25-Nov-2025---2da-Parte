@@ -121,9 +121,9 @@ La API no realiza comparaciones simples; calcula la **Distancia Euclidiana** en 
 │    ├─ model_api.py   # Servidor API (FastAPI)
 │    ├─ music_recommender_neural.joblib # Artefacto generado (Modelo serializado)
 │    │  (aquí se guardarán los artefactos del modelo entrenado)
-│    ├─ colab/
-│    	├─ train_model.ipynb
-│    	├─ model_api.ipynb
+│    ├─📁 colab/
+│    	  ├─ train_model.ipynb
+│    	  ├─ model_api.ipynb
 │    
 ├─📁 documentacion/
 │    📁├─ media/
