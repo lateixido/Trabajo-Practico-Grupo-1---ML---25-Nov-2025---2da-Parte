@@ -25,6 +25,7 @@
 │      ├─ Instructivo.md
 │
 ├── Readme.md # Esta documentación
+```
 ---
 
 ## 2) Entrenar el modelo
