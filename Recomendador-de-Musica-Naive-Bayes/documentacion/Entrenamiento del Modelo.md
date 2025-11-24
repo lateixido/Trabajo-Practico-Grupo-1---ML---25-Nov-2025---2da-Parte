@@ -7,7 +7,7 @@ Este script, denominado `train_model.py`, realiza el entrenamiento de tres compo
 Esta etapa asegura que los datos están limpios y en el formato correcto para los modelos.
 
 * **Carga del Dataset:** El script carga el dataset de Spotify desde una ruta absoluta específica.
-* **Definición de Features:** Se identifican **11 características numáricas** clave (`feature_cols`) de audio, como **Danceability**, **Energy**, **Loudness**, **Tempo**, **Positiveness** (Valence), etc., que describen el perfil musical de cada canción.
+* **Definición de Features:** Se identifican **11 características numéricas** clave (`feature_cols`) de audio, como **Danceability**, **Energy**, **Loudness**, **Tempo**, **Positiveness** (Valence), etc., que describen el perfil musical de cada canción.
 * **Limpieza:** Se eliminan filas que contengan valores nulos (`NaN`) en las columnas necesarias.
 * **Escalado de Features:** Se utiliza **StandardScaler** para estandarizar las 11 características. Esto es esencial para algoritmos basados en distancias (KNN y K-Means), asegurando que todas las *features* contribuyan equitativamente a la medición de la similitud.
 * **Preparación de Matrices:**
@@ -24,20 +24,20 @@ Este es el **motor de similitud** del sistema.
 
 * **Algoritmo:** **NearestNeighbors** (Vecinos más Cercanos).
 * **Features:** Utiliza las 11 *features* escaladas (`X`).
-* **Mátrica:** Se elige la **Distancia Coseno** (`metric='cosine'`), que mide la similitud angular entre vectores de canciones, ideal para encontrar temas con patrones de audio similares.
+* **Métrica:** Se elige la **Distancia Coseno** (`metric='cosine'`), que mide la similitud angular entre vectores de canciones, ideal para encontrar temas con patrones de audio similares.
 * **Propósito:** Proporcionar una lista de canciones más cercanas a una canción de entrada.
 
 ### 2.2. Agrupamiento de Estilos (K-Means Clustering)
 
-Este componente clasifica las canciones en categorías de "estilo" o "gánero" basadas en sus atributos de audio.
+Este componente clasifica las canciones en categorías de "estilo" o "género" basadas en sus atributos de audio.
 
-* **Mátodo del Codo:** Se ejecuta un bucle para calcular la **Inertia**  para diferentes números de clusters (`k`), generando un gráfico para ayudar a determinar visualmente el valor óptimo de `k`.
+* **Método del Codo:** Se ejecuta un bucle para calcular la **Inertia**  para diferentes números de clusters (`k`), generando un gráfico para ayudar a determinar visualmente el valor óptimo de `k`.
 
 ![](./media/Metodo_del_Codo.png)
 
 * **Clustering Final:** Se entrena el modelo **KMeans** con un valor elegido (`k_opt = 6`).
 * **Asignación:** A cada canción del DataFrame se le asigna un **ID de cluster** (`df["cluster"]`), representando su categoría de estilo.
-* **Análisis:** Se imprime el perfil promedio de las 11 *features* para cada cluster, lo que ayuda a interpretar quá tipo de música representa cada grupo (ej: "Cluster 0" = Alta Energía, Bajo Tempo).
+* **Análisis:** Se imprime el perfil promedio de las 11 *features* para cada cluster, lo que ayuda a interpretar qué tipo de música representa cada grupo (ej: "Cluster 0" = Alta Energía, Bajo Tempo).
 
 ![](./media/Mapa_de_Calor.png)
 
@@ -79,4 +79,4 @@ Este es el paso final que permite que la API de FastAPI funcione sin necesidad d
 
 ---
 
-Este sistema permite ofrecer recomendaciones que no solo son similares en audio, sino que tambián pueden estar **filtradas por un tipo de música coherente**, lo cual mejora la experiencia del usuario.
+Este sistema permite ofrecer recomendaciones que no solo son similares en audio, sino que también pueden estar **filtradas por un tipo de música coherente**, lo cual mejora la experiencia del usuario.

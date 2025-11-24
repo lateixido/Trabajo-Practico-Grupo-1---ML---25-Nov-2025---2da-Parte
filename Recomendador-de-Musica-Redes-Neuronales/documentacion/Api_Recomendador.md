@@ -49,7 +49,7 @@ Cuando se ejecuta la API, ocurre lo siguiente antes de aceptar cualquier petici�
 
 **`GET /search?song=...`**
 
-  * **Función:** Busca coincidencias parciales por nombre. 脷til para el autocompletado en el frontend.
+  * **Función:** Busca coincidencias parciales por nombre. útil para el autocompletado en el frontend.
   * **Parámetros:** `song` (texto a buscar).
   * **Respuesta:** Lista de canciones que coinciden, incluyendo sus índices y características (Energy, Danceability) para pre-visualizar datos.
 
