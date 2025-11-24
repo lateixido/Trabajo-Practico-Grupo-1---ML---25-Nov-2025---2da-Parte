@@ -96,12 +96,12 @@ Se utiliza una red neuronal que aprende a comprimir 11 características de audio
 
 Cada canción es asignada a un grupo con nombre interpretable mediante el algoritmo **K-Means**:
 
-  * *Mainstream Hits*
-  * *Live Energy*
-  * *Acoustic Chill*
-  * *Urban Dance*
-  * *Instrumental Focus*
-  * *Happy Upbeat*
+  * *Pop Urbano / Rap Melódico / Trap Mainstream*
+  * *Rock/Metal + Rap Intenso + Worship en vivo*
+  * *Vocal Jazz*
+  * *Rap / Hip Hop*
+  * *Rock/Industrial Atmosférico & Electrónica Oscura*
+  * *Rock/Pop Energético y Optimista*
 
 ### Búsqueda Vectorial
 

@@ -23,12 +23,12 @@ El proceso se divide en 7 pasos secuenciales:
   * **Tecnología:** K-Means.
   * **Objetivo:** Agrupar las canciones en 6 "familias" o clusters basados en sus similitudes.
   * **Naming:** Asigna nombres interpretables a cada grupo para mostrar en el Frontend:
-      * *Mainstream Hits*
-      * *Live Energy*
-      * *Acoustic Chill*
-      * *Urban Dance*
-      * *Instrumental Focus*
-      * *Happy Upbeat*
+	  * *Pop Urbano / Rap Melódico / Trap Mainstream*
+	  * *Rock/Metal + Rap Intenso + Worship en vivo*
+	  * *Vocal Jazz*
+	  * *Rap / Hip Hop*
+	  * *Rock/Industrial Atmosférico & Electrónica Oscura*
+	  * *Rock/Pop Energético y Optimista*
 
 ### 4\. Red Neuronal (Autoencoder)
 
