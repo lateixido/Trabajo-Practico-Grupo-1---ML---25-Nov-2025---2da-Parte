@@ -94,12 +94,11 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 | **Modelos** | Python, Scikit-learn (KNN, K-Means, GaussianNB) | Núcleo de recomendación y clasificación. |
 | **Backend** | FastAPI, Uvicorn | Servidor RESTful de alto rendimiento. |
 | **Frontend** | HTML5, CSS3, JavaScript | Interfaz de usuario interactiva y asíncrona. |
-```
+
 
 ---
 # 6. Estructura de Archivos
 
-```text
 📁 Recomendador-de-Musica-Redes-Neuronales/
 ├─ front_end/
 │   └─ index.html     # Interfaz de Usuario (Frontend)
@@ -122,4 +121,3 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 │   ├─ Instructivo.md
 │
 ├─ Readme.md # Esta documentación
-```
