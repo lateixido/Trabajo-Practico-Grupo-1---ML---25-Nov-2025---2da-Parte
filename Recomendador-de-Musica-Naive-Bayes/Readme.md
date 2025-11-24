@@ -101,25 +101,25 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 
 ```text
 📁 Recomendador-de-Musica-Redes-Neuronales/
-├─ front_end/
-│   └─ index.html     # Interfaz de Usuario (Frontend)
+├─📁 front_end/
+│    └─ index.html     # Interfaz de Usuario (Frontend)
 │
-├─ model-python/
-│   ├─ train_model.py # Script de entrenamiento (ML)
-│   ├─ model_api.py   # Servidor API (FastAPI)
-│   ├─ music_recommender_with_clusters.joblib # Artefacto generado (Modelo serializado)
-│   │  (aquí se guardarán los artefactos del modelo entrenado)
-│   ├─ colab/
-│   	├─ train_model.ipynb
-│   	├─ model_api.ipynb
+├─📁 model-python/
+│    ├─ train_model.py # Script de entrenamiento (ML)
+│    ├─ model_api.py   # Servidor API (FastAPI)
+│    ├─ music_recommender_with_clusters.joblib # Artefacto generado (Modelo serializado)
+│    │  (aquí se guardarán los artefactos del modelo entrenado)
+│    ├─ colab/
+│    	├─ train_model.ipynb
+│    	├─ model_api.ipynb
 │    
-├─ documentacion/
-│   ├─ media/
-│   ├─ Api_Recomendador.md
-│   ├─ Ejemplos.md
-│   ├─ Entrenamiento del Modelo.md
-│   ├─ FontEnd.md
-│   ├─ Instructivo.md
+├─📁 documentacion/
+│    📁├─ media/
+│      ├─ Api_Recomendador.md
+│      ├─ Ejemplos.md
+│      ├─ Entrenamiento del Modelo.md
+│      ├─ FontEnd.md
+│      ├─ Instructivo.md
 │
-├─ Readme.md # Esta documentación
+├── Readme.md # Esta documentación
 ```
