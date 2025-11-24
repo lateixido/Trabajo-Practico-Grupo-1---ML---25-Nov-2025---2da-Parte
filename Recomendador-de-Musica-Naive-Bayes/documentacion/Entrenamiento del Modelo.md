@@ -33,13 +33,13 @@ Este componente clasifica las canciones en categorías de "estilo" o "gánero" b
 
 * **Mátodo del Codo:** Se ejecuta un bucle para calcular la **Inertia**  para diferentes números de clusters (`k`), generando un gráfico para ayudar a determinar visualmente el valor óptimo de `k`.
 
-![](./media/Metodo del Codo.png)
+![](./media/Metodo_del_Codo.png)
 
 * **Clustering Final:** Se entrena el modelo **KMeans** con un valor elegido (`k_opt = 6`).
 * **Asignación:** A cada canción del DataFrame se le asigna un **ID de cluster** (`df["cluster"]`), representando su categoría de estilo.
 * **Análisis:** Se imprime el perfil promedio de las 11 *features* para cada cluster, lo que ayuda a interpretar quá tipo de música representa cada grupo (ej: "Cluster 0" = Alta Energía, Bajo Tempo).
 
-![](./media/Mapa de Calor.png)
+![](./media/Mapa_de_Calor.png)
 
 ### 2.3. Clasificador de Clusters (Gaussian Naive Bayes)
 
@@ -49,7 +49,7 @@ Este modelo aprende a predecir el cluster al que pertenece una canción basándo
 * **Entrenamiento:** Se entrena con las **features escaladas** (`X_dense`) como entrada y el **ID del cluster** (`y`) como etiqueta.
 * **Evaluación:** Se calcula el **Accuracy** y se genera la **Matriz de Confusión** y el **Reporte de Clasificación**, indicando la eficacia del modelo para replicar las asignaciones de K-Means.
 
-![](./media/Matriz de Confusión.png)
+![](./media/Matriz_de_Confusión.png)
 
 ---
 
