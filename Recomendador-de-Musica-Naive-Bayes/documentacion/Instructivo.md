@@ -56,7 +56,7 @@ Debe existir como una entrada de `allow_origins` en `CORSMiddleware` como `http:
 Correrá en:  
 `[http://localhost:[puerto_frontend]](http://localhost:[puerto_frontend])`
 
-Default:**8080**
+Default: **8080**
 
 ## 4) Levantar el Backend (FastAPI)
 
