@@ -1,10 +1,9 @@
-# Instructivo Recomendador de Música
+# Instructivo Recomendador de Música Híbrido
 
 ## 1) Estructura de Carpetas
 
 ```
 Recomendador-de-Musica-Naive-Bayes/
-│
 ├─ front_end/
 │   └─ index.html
 │
@@ -17,17 +16,18 @@ Recomendador-de-Musica-Naive-Bayes/
 │   	├─ train_model.ipynb
 │   	├─ model_api.ipynb
 │    
-├─ datasets/
-│   ├─ light_spotify_dataset.csv
-│
 ├─ documentacion/
 │   ├─ media/
 │   ├─ Api_Recomendador.md
+│   ├─ Ejemplos.md
 │   ├─ Entrenamiento del Modelo.md
 │   ├─ FontEnd.md
 │   ├─ Instructivo.md
 │
 ├─ Readme.md
+│
+dataset/
+├─ light_spotify_dataset.csv
 ```
 
 ---

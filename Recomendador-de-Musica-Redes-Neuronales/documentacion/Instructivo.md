@@ -1,4 +1,4 @@
-# Instructivo Recomendador de Música
+# Instructivo Recomendador de Música con redes Neuronales
 
 ## 1) Estructura de Carpetas
 
@@ -16,17 +16,18 @@ Recomendador-de-Musica-Redes-Neuronales/
 │   	├─ train_model.ipynb
 │   	├─ model_api.ipynb
 │    
-├─ datasets/
-│   ├─ light_spotify_dataset.csv
-│
 ├─ documentacion/
 │   ├─ media/
 │   ├─ Api_Recomendador.md
+│   ├─ Ejemplos.md
 │   ├─ Entrenamiento del Modelo.md
 │   ├─ FontEnd.md
 │   ├─ Instructivo.md
 │
 ├─ Readme.md
+│
+dataset/
+├─ light_spotify_dataset.csv
 ```
 
 ---
