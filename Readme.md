@@ -1,4 +1,13 @@
-﻿# PROBLEMÁTICA
+﻿Trabajo Práctico Machine Learning - Modelo de Negocio
+Grupo 1 - 25/11/2025
+Integrantes
+Macías, Juliana
+Cortés Cid, Francisco
+Moreno, Nahuel
+Teixido, Leonardo
+---
+
+# PROBLEMÁTICA
 
 
 - Los servicios actuales recomiendan música basada principalmente en género, artistas similares e interacción con la aplicación (búsqueda, escucha, saltar o guardar)
@@ -99,3 +108,4 @@
 - Recomendación por estados de ánimo
 - Integrar un identificador de audio y luego recomendar música similar
 - Asistente vocal para búsquedas por descripción
+---
