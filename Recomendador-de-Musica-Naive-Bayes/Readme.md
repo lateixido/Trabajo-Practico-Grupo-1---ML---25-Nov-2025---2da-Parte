@@ -99,6 +99,7 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 ---
 # 6. Estructura de Archivos
 
+```text
 📁 Recomendador-de-Musica-Redes-Neuronales/
 ├─ front_end/
 │   └─ index.html     # Interfaz de Usuario (Frontend)
@@ -121,3 +122,4 @@ La función `renderOkPayload` procesa el JSON de la API y muestra la informació
 │   ├─ Instructivo.md
 │
 ├─ Readme.md # Esta documentación
+```
