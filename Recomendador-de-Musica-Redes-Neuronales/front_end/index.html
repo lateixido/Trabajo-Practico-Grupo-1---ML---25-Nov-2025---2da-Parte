@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recomendador de Música con Red Neuronal (Autoencoder)</title>
+  <style>
+    :root { --bg:#f4f4f4; --card:#fff; --text:#333; --muted:#666; --primary:#007bff; --primary-d:#0056b3; --ok:#e8f5e8; --err:#fde8e8; --cluster:#7e57c2; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 40px; background: var(--bg); color: var(--text); }
+    h1 { margin-bottom: 12px; }
+    form { background: var(--card); padding: 20px; border-radius: 8px; margin-bottom: 20px; display: grid; gap: 10px; max-width: 720px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    label { font-weight: 600; }
+    input, select { width: 100%; max-width: 420px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    button { width: fit-content; padding: 10px 16px; background: var(--primary); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+    button:hover { background: var(--primary-d); }
+    button.secondary { background: #6c757d; }
+    button.secondary:hover { background: #5a6268; }
+    
+    .stack { display: grid; gap: 12px; }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .muted { color: var(--muted); font-size: 0.9rem; }
+    .loading { color: var(--primary); font-style: italic; font-weight: 500; }
+    .error { background: var(--err); color: #b40000; padding: 12px; border-radius: 6px; border-left: 4px solid #b40000; }
+    .okcard { background: var(--ok); padding: 16px; border-radius: 8px; border: 1px solid #c3e6cb; }
+    .card { background: var(--card); padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .song-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; background: #fff; transition: transform 0.1s; }
+    .song-item:hover { border-color: var(--primary); }
+    
+    .pill { display:inline-block; padding: 2px 8px; border-radius: 999px; margin-left:6px; font-size:11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold; }
+    .pill.sim { background:#eef2ff; color: var(--primary); }
+    .pill.cluster { background:#f3e5f5; color: var(--cluster); border: 1px solid #e1bee7; }
+    
+    small code { background:#f7f7f7; padding:2px 5px; border-radius:4px; color: #d63384; font-family: monospace; }
+    
+    .cluster-filter-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 5px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+    input[type="checkbox"] { width: auto; margin: 0; transform: scale(1.2); cursor: pointer; }
+    label[for="sameClusterCheckbox"] { cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  </style>
+</head>
+<body>
+  <h1>🧠 Recomendador de Música con Red Neuronal (Autoencoder)</h1>
+  <p class="muted">Sistema de recomendación basado en Embeddings de Deep Learning</p>
+
+  <form id="form">
+    <div class="stack">
+      <div>
+        <label for="song">Canción de referencia</label>
+        <input id="song" placeholder="Ej: Dance" required autofocus />
+      </div>
+
+      <div id="artist-container" style="display:none;">
+        <label for="artist">Artista (Desambiguación)</label>
+        <select id="artist"></select>
+        <div class="muted">Hemos encontrado varias canciones con ese nombre. Por favor selecciona el artista correcto.</div>
+      </div>
+        
+      <div class="cluster-filter-group">
+        <label for="sameClusterCheckbox">
+            <input type="checkbox" id="sameClusterCheckbox" checked> 
+            Filtro de Cluster
+        </label>
+        <div class="muted" style="font-size: 0.85em;">
+            Si está activo, solo recomienda canciones del mismo "tipo" o grupo musical.
+        </div>
+      </div>
+      
+      <div class="row">
+        <button id="btn-recomendar" type="submit">🔍 Buscar Recomendaciones</button>
+        <button id="btn-limpiar" type="button" class="secondary">Limpiar</button>
+      </div>
+      <span id="hint" class="muted"></span>
+    </div>
+  </form>
+
+  <div id="output" class="stack" style="max-width: 920px;"></div>
+
+  <script>
+    // ==== CONFIG ====
+    // IMPORTANTE: Asegúrate de que este puerto coincida con donde corre tu FastAPI (uvicorn main:app --port 8000)
+    const API_BASE = "http://localhost:8090"; 
+
+    // ==== ELEMENTS ====
+    const form = document.getElementById("form");
+    const songInput = document.getElementById("song");
+    const artistWrap = document.getElementById("artist-container");
+    const artistSelect = document.getElementById("artist");
+    const output = document.getElementById("output");
+    const hint = document.getElementById("hint");
+    const btnLimpiar = document.getElementById("btn-limpiar");
+    const sameClusterCheckbox = document.getElementById("sameClusterCheckbox");
+
+    // ==== HELPERS ====
+    const html = (strings, ...vals) => strings.map((s,i)=>s+(vals[i]??"")).join("");
+    const pct = (v) => (v == null ? "N/A" : (v * 100).toFixed(1) + "%");
+    const fmt = (n, d=2) => Number(n).toFixed(d);
+
+    function showLoading(msg="Calculando distancias vectoriales...") {
+      output.innerHTML = `<div class="loading">⏳ ${msg}</div>`;
+    }
+    function showError(msg) {
+      output.innerHTML = `<div class="error">❌ ${msg}</div>`;
+    }
+    function clearOutput() {
+      output.innerHTML = "";
+      hint.textContent = "";
+    }
+    function populateArtists(artists) {
+      artistSelect.innerHTML = "";
+      // Opción por defecto
+      const def = document.createElement("option");
+      def.text = "-- Selecciona un artista --";
+      def.value = "";
+      def.disabled = true;
+      def.selected = true;
+      artistSelect.appendChild(def);
+
+      for (const a of artists) {
+        const opt = document.createElement("option");
+        opt.value = opt.textContent = a;
+        artistSelect.appendChild(opt);
+      }
+      artistWrap.style.display = "block";
+      hint.textContent = "⚠️ Se requiere selección de artista.";
+      artistSelect.focus();
+    }
+    function hideArtistPicker() {
+      artistWrap.style.display = "none";
+      artistSelect.innerHTML = "";
+    }
+
+    // ==== RENDERIZADO ====
+    function renderOkPayload(data) {
+      const { original_song, recommendations } = data;
+
+      // CORRECCIÓN CLAVE: La API Python devuelve 'nombre_cluster', no 'cluster_name'
+      const seedCluster = original_song.nombre_cluster || `Cluster ${original_song.cluster_id}`;
+
+      // 1. Tarjeta Canción Original
+      const originCard = html`
+        <div class="okcard">
+          <div style="display:flex; justify-content:space-between; align-items:start;">
+            <div>
+                <h3 style="margin:0 0 5px 0;">🎵 ${original_song.song}</h3>
+                <span class="muted">${original_song.artist}</span>
+            </div>
+            <span class="pill cluster" title="Grupo asignado por K-Means">${seedCluster}</span>
+          </div>
+          <div class="muted" style="margin-top:10px; border-top:1px solid rgba(0,0,0,0.05); padding-top:8px;">
+            <small>
+              Danceability: <code>${fmt(original_song.features.Danceability)}</code> &bull;
+              Energy: <code>${fmt(original_song.features.Energy)}</code> &bull;
+              Positiveness: <code>${fmt(original_song.features.Positiveness)}</code> &bull;
+              Loudness: <code>${fmt(original_song.features.Loudness)}</code>
+            </small>
+          </div>
+        </div>
+      `;
+
+      // 2. Lista de Recomendaciones
+      const listItems = (recommendations ?? []).map((rec, i) => {
+        // CORRECCIÓN CLAVE: Usar 'nombre_cluster' aquí también
+        const recCluster = rec.nombre_cluster || `Cluster ${rec.cluster_id}`;
+        
+        return html`
+        <li class="song-item">
+          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:5px;">
+            <div>
+                <strong>${i+1}. ${rec.song}</strong> <span class="muted">— ${rec.artist}</span>
+            </div>
+            <div>
+                <span class="pill sim" title="Cercanía en espacio vectorial">Similitud: ${pct(rec.similarity)}</span>
+                <span class="pill cluster">${recCluster}</span>
+            </div>
+          </div>
+          <div class="muted" style="margin-top:6px; font-size:0.85em;">
+            <small>
+              D: <code>${fmt(rec.Danceability)}</code> 
+              E: <code>${fmt(rec.Energy)}</code> 
+              P: <code>${fmt(rec.Positiveness)}</code>
+              L: <code>${fmt(rec.Loudness)}</code>
+            </small>
+          </div>
+        </li>
+      `}).join("");
+
+      const recCard = html`
+        <div class="card">
+          <h3 style="margin:0 0 12px;">Recomendaciones (Top ${recommendations.length})</h3>
+          ${recommendations && recommendations.length
+            ? `<ul class="list">${listItems}</ul>`
+            : `<div class="muted" style="padding:20px; text-align:center;">No se encontraron canciones similares con los filtros actuales.</div>`
+          }
+        </div>
+      `;
+
+      output.innerHTML = originCard + recCard;
+    }
+
+    // ==== CORE LOGIC ====
+    async function fetchRecommendations(song, artist=null, sameCluster=true) {
+      // Ajustamos puerto y parámetros para la nueva API
+      const url = new URL(`${API_BASE}/recommend/${encodeURIComponent(song)}`);
+      
+      if (artist) url.searchParams.set("artist", artist);
+      
+      // Parámetro booleano esperado por FastAPI
+      url.searchParams.set("same_cluster", sameCluster ? "true" : "false"); 
+      url.searchParams.set("n", 10); // Pedimos top 10
+      
+      const res = await fetch(url.toString(), { headers: { "Accept": "application/json" }});
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Error del servidor (${res.status}): ${errText}`);
+      }
+      return res.json();
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const song = songInput.value.trim();
+      const chosenArtist = artistWrap.style.display === "block" ? artistSelect.value : null;
+      const sameCluster = sameClusterCheckbox.checked;
+
+      if (!song) {
+        showError("Por favor ingresa el nombre de una canción.");
+        return;
+      }
+      
+      // Validación simple si el dropdown está visible pero no seleccionado
+      if (artistWrap.style.display === "block" && !chosenArtist) {
+          showError("Por favor selecciona un artista de la lista.");
+          return;
+      }
+
+      showLoading();
+      hint.textContent = "";
+      
+      try {
+        const data = await fetchRecommendations(song, chosenArtist, sameCluster);
+
+        // 1. Caso: No encontrado
+        if (data.status === "No_Encontrado") {
+          hideArtistPicker();
+          showError(`No encontramos "${song}". Intenta con otro nombre.`);
+          return;
+        }
+
+        // 2. Caso: Ambigüedad (Necesita artista)
+        if (data.status === "Artista_Necesario") {
+          const artists = (data.options && data.options.artists) ? data.options.artists : [];
+          if (artists.length === 0) {
+            showError("Título ambiguo, pero no hay datos de artistas disponibles.");
+            return;
+          }
+          populateArtists(artists);
+          output.innerHTML = `<div class="card" style="border-left: 4px solid #ffc107;">⚠️ <strong>Título ambiguo:</strong> Por favor selecciona el artista arriba.</div>`;
+          return;
+        }
+
+        // 3. Caso: Éxito
+        if (data.status === "ok") {
+          hideArtistPicker();
+          renderOkPayload(data);
+          return;
+        }
+
+        // 4. Fallback errores genéricos
+        if (data.detail) { // FastAPI validation errors
+             showError(JSON.stringify(data.detail));
+        } else {
+             showError("Respuesta inesperada del servidor.");
+        }
+
+      } catch (err) {
+        console.error(err);
+        showError(`No se pudo conectar con la API.<br><small>${err.message}</small>`);
+      }
+    });
+
+    btnLimpiar.addEventListener("click", () => {
+      songInput.value = "";
+      sameClusterCheckbox.checked = true; 
+      hideArtistPicker();
+      clearOutput();
+      songInput.focus();
+    });
+  </script>
+</body>
+</html>

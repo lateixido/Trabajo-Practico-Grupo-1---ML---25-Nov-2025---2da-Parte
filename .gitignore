@@ -1,0 +1,28 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Entornos Virtuales (Virtual Envs) ---
+# Es muy común llamar a la carpeta del entorno así:
+venv/
+env/
+.venv/
+
+# --- Variables de Entorno / Seguridad ---
+# ¡CRITICO! Nunca subas tus claves API o contraseñas
+.env
+
+# --- Jupyter Notebooks (si los usas) ---
+.ipynb_checkpoints
+
+# --- Distribución / Empaquetado ---
+build/
+dist/
+*.egg-info/
+
+# --- Archivos del Sistema Operativo (Basura) ---
+# Mac
+.DS_Store
+# Windows
+Thumbs.db
