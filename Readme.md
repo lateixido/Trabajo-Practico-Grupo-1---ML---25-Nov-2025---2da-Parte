@@ -1,10 +1,12 @@
-﻿Trabajo Práctico Machine Learning - Modelo de Negocio
-Grupo 1 - 25/11/2025
-Integrantes
-Macías, Juliana
-Cortés Cid, Francisco
-Moreno, Nahuel
-Teixido, Leonardo
+﻿# Trabajo Práctico Machine Learning - Modelo de Negocio
+# Grupo 1 - 25/11/2025
+
+## Integrantes
+- Macías, Juliana
+- Cortés Cid, Francisco
+- Moreno, Nahuel
+- Teixido, Leonardo
+
 ---
 
 # PROBLEMÁTICA
