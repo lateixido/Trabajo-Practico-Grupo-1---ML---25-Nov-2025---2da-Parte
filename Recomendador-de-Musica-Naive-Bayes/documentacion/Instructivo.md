@@ -24,7 +24,8 @@
 │      ├─ FontEnd.md
 │      ├─ Instructivo.md
 │
-├── Readme.md # Esta documentación```
+├── Readme.md # Esta documentación
+```
 ---
 
 ## 2) Entrenar el modelo
