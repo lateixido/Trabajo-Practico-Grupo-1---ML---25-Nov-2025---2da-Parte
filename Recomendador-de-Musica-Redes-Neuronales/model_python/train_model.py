@@ -70,7 +70,6 @@ nombres_clusters = {
     5: "Rock/Pop Energético y Optimista"         # Tempo / Positiveness
 }
 
-
 df["nombre_cluster"] = df["cluster"].map(nombres_clusters)
 
 # =============================================================================
